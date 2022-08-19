@@ -4,7 +4,7 @@ import hljs from 'highlight.js';
 import "./App.css"
 
 function App() {
-  const [text, setText] = useState("")
+  const [text, setText] = useState("# Default Markdown")
   const previewEl = useRef(null)
 
   marked.setOptions({
@@ -32,7 +32,7 @@ function App() {
     <div className="App">
       <h1 className="app-title">Markdown Previewer</h1>
       <div id="editor-container">
-        <textarea id="editor" onChange={handleText} placeholder="Editor"></textarea>
+        <textarea id="editor" onChange={handleText} placeholder="Editor" value={text}></textarea>
       </div>
       <div id="preview" ref={previewEl}></div>
       <footer>
