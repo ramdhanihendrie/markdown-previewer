@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useRef, useState } from 'react'
+import { marked } from 'marked'
+import hljs from 'highlight.js';
+import "./App.css"
 
 function App() {
+  const [text, setText] = useState("")
+  const previewEl = useRef(null)
+
+  marked.setOptions({
+    renderer: new marked.Renderer(),
+    highlight: function(code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+      return hljs.highlight(code, { language }).value;
+    },
+    gfm: true,
+    breaks: true,
+  })
+  
+  const handleText = (e) => {
+    setText(e.target.value)
+  }
+
+  const markedText = marked.parse(text)
+  
+  useEffect(() => {
+    previewEl.current.innerHTML = markedText
+  })
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 className="app-title">Markdown Previewer</h1>
+      <div id="editor-container">
+        <textarea id="editor" onChange={handleText} placeholder="Editor"></textarea>
+      </div>
+      <div id="preview" ref={previewEl}></div>
+      <footer>
+        <p>Made with ♥ by RamdhaniHendrie</p>
+      </footer>
     </div>
-  );
+  )
 }
 
 export default App;
